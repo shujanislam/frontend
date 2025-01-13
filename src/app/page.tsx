@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, ChangeEvent } from 'react';
 
 export default function Home() {
   const [username, setUsername] = useState('');
@@ -8,7 +8,8 @@ export default function Home() {
   const [count, setCount] = useState(0);
   const [responseMessage, setResponseMessage] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Explicitly type the handleChange function
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
     if (name === 'username') {
       setUsername(value);
@@ -17,8 +18,10 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  // Explicitly type the handleSubmit function
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    
     try {
       const response = await fetch('https://six-southern-tarp.glitch.me/login', {
         method: 'POST',
@@ -27,11 +30,11 @@ export default function Home() {
         },
         body: JSON.stringify({ username, password }),
       });
+
       if (!response.ok) {
         const errorData = await response.json();
         setError(errorData.message);
       } else {
-        const result = await response.json();
         setCount((prevCount) => {
           const newCount = prevCount + 1;
           if (newCount === 1) {
@@ -44,8 +47,8 @@ export default function Home() {
           return newCount;
         });
       }
-    } catch (error) {
-      console.error('Error:', error);
+    } catch (err) {
+      console.error('Error:', err);
       setError('Something went wrong. Please try again.');
     }
   };
