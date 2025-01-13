@@ -9,7 +9,7 @@ export default function Home() {
   const [count, setCount] = useState(0);
   const [responseMessage, setResponseMessage] = useState('');
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (name === 'username') {
       setUsername(value);
@@ -18,7 +18,7 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
   e.preventDefault();
   try {
     const response = await fetch('https://six-southern-tarp.glitch.me/login', {
