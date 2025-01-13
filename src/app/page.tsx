@@ -30,8 +30,10 @@ export default function Home() {
       const newCounter = prevCounter + 1;
       if (newCounter === 1) {
         setError('Failed username and password combination');
+        console.log('Failed')
       } else if (newCounter >= 2) {
         setError('An error occurred. Please try again later.');
+        console.log('Server error')
       }
       return newCounter;
     });
