@@ -18,42 +18,39 @@ export default function Home() {
     }
   };
 
+  // Fixed the type annotation here
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  try {
-    const response = await fetch('https://six-southern-tarp.glitch.me/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username, password }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      setError(errorData.message);
-    } else {
-      const result = await response.json();
-      setCount((prevCount) => {
-        const newCount = prevCount + 1;
-
-        // Update error message based on the new count
-        if (newCount === 1) {
-          setError('Wrong username and password combination');
-        } else if (newCount >= 2) {
-          setError('An error occurred on the server');
-        } else {
-          setError('');
-        }
-
-        return newCount;
+    e.preventDefault();
+    try {
+      const response = await fetch('https://six-southern-tarp.glitch.me/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
       });
+      if (!response.ok) {
+        const errorData = await response.json();
+        setError(errorData.message);
+      } else {
+        const result = await response.json();
+        setCount((prevCount) => {
+          const newCount = prevCount + 1;
+          if (newCount === 1) {
+            setError('Wrong username and password combination');
+          } else if (newCount >= 2) {
+            setError('An error occurred on the server');
+          } else {
+            setError('');
+          }
+          return newCount;
+        });
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Something went wrong. Please try again.');
     }
-  } catch (error) {
-    console.error('Error:', error);
-    setError('Something went wrong. Please try again.');
-  }
-};
+  };
 
 
   return (
