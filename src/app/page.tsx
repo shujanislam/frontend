@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 
 export default function Home() {
   const [username, setUsername] = useState('');
@@ -18,8 +17,7 @@ export default function Home() {
     }
   };
 
-  // Fixed the type annotation here
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await fetch('https://six-southern-tarp.glitch.me/login', {
@@ -51,7 +49,6 @@ export default function Home() {
       setError('Something went wrong. Please try again.');
     }
   };
-
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -105,4 +102,3 @@ export default function Home() {
     </div>
   );
 }
-
