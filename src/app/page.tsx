@@ -18,7 +18,7 @@ export default function Home() {
     }
   };
 
-  const handleSubmit = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   try {
     const response = await fetch('https://six-southern-tarp.glitch.me/login', {
