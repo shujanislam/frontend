@@ -10,6 +10,19 @@ export default function Home() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
   event.preventDefault();
   
+  // Use functional update to ensure we're working with the latest state
+    setCounter(prevCounter => {
+      const newCounter = prevCounter + 1;
+      if (newCounter === 1) {
+        setError('Failed username and password combination');
+        console.log('Failed')
+      } else if (newCounter >= 2) {
+        setError('An error occurred. Please try again later.');
+        console.log('Server error')
+      }
+      return newCounter;
+    });
+
   try {
     const response = await fetch('https://six-southern-tarp.glitch.me/login', {
       method: 'POST',
@@ -23,20 +36,7 @@ export default function Home() {
     if (!response.ok) {
       setError(data.message || 'Login failed');
       return;
-    }
-
-    // Use functional update to ensure we're working with the latest state
-    setCounter(prevCounter => {
-      const newCounter = prevCounter + 1;
-      if (newCounter === 1) {
-        setError('Failed username and password combination');
-        console.log('Failed')
-      } else if (newCounter >= 2) {
-        setError('An error occurred. Please try again later.');
-        console.log('Server error')
-      }
-      return newCounter;
-    });
+    } 
   } catch (err) {
     setError('An error occurred. Please try again.');
   }
